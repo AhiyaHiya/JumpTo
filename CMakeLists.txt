@@ -5,23 +5,34 @@ project(HyperDrive)
 set(CMAKE_CXX_STANDARD 20)
 
 # Conan setup
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+include(${CMAKE_BINARY_DIR}/generators/conan_toolchain.cmake)
 
-# Include directories
-include_directories(${CMAKE_SOURCE_DIR}/include)
+enable_testing()
+find_package(Boost CONFIG REQUIRED)
+find_package(GTest CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
 
 ##
 # Project setup
 ##
-# Source files
-file(GLOB_RECURSE SOURCES "src/*.cpp")
+# Include directories
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # Executable
-add_executable(HyperDrive ${SOURCES})
+add_executable(HyperDrive
+    "include/HyperDrive/DataSet.h"
+    "src/DataSet.cpp"
+    "src/main.cpp"
+)
+
+message(STATUS "CONAN_LIBS ${CONAN_LIBS}")
 
 # Link libraries
-target_link_libraries(HyperDrive ${CONAN_LIBS})
+target_link_libraries(HyperDrive
+    PRIVATE
+    boost::boost
+    nlohmann_json::nlohmann_json
+)
 
 # Tests
-add_subdirectory(tests)
+#add_subdirectory(tests)
