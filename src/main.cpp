@@ -6,24 +6,50 @@
 #include <cstdint>
 #include <iostream>
 
+void ListLocations(auto dataSet)
+{
+    if (dataSet.empty())
+    {
+        printf("No locations stored\n");
+        return;
+    }
+
+    for (const auto& [locationName, path] : dataSet)
+    {
+        auto message = std::format("{} : {}", locationName, path);
+        printf("%s\n", message.c_str());
+    }
+}
+
 std::int32_t main(std::int32_t argc, char** argv)
 {
     auto options = boost::program_options::options_description("Program options");
     options.add_options()
-        ("help", "produce help message")
-        ("add", "Add a location")
-        ("clean", "Clean up any locations that don't exist anymore")
-        ("list", "List all of the locations");
+        ("help,h", "produce help message")
+        ("add,a", boost::program_options::value<std::string>(),"Add a location")
+        ("clean,c", "Clean up any locations that don't exist anymore")
+        ("list,l", "List all of the locations")
+        ("remove,r", boost::program_options::value<std::string>(), "Remove given location");
 
     auto positionalArgs = boost::program_options::positional_options_description();
-    positionalArgs.add("location", -1); // -1 means all positional arguments are assigned to location
+    positionalArgs.add("location", 1);
 
     auto variables = boost::program_options::variables_map();
-    boost::program_options::store(boost::program_options::command_line_parser(argc, argv)
-        .options(options)
-        .positional(positionalArgs)
-        .run(), variables);
-    boost::program_options::notify(variables);
+    try
+    {
+        boost::program_options::store(boost::program_options::command_line_parser(argc, argv)
+            .options(options)
+            .positional(positionalArgs)
+            .run(), variables);
+        boost::program_options::notify(variables);
+    }
+    catch (const boost::program_options::error& ex)
+    {
+        std::cout << "Error: " << ex.what() << "\n";
+        std::cout << options << "\n";
+        return 0;
+    }
+    
 
     if(variables.empty() || variables.count("help"))
     {
@@ -35,20 +61,24 @@ std::int32_t main(std::int32_t argc, char** argv)
     // Load up data entries
     auto dataSet = DataSet::LoadDefaultFile();
 
+    if (variables.count("add"))
+    {
+        printf("Add called\n");
+        return 0;
+    }
+    if (variables.count("clean"))
+    {
+        printf("Clean called\n");
+        return 0;
+    }
     if (variables.count("list"))
     {
-        if(dataSet.empty())
-        {
-            printf("No locations stored\n");
-            return 0;
-        }
-
-        for (const auto& [locationName, path] : dataSet)
-        {
-            auto message = std::format("{} : {}", locationName, path);
-            printf("%s\n", message.c_str());
-        }
-
+        ListLocations(dataSet);
+        return 0;
+    }
+    if (variables.count("location"))
+    {
+        printf("Location called\n");
         return 0;
     }
 
