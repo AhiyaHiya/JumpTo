@@ -14,9 +14,7 @@ find_package(nlohmann_json CONFIG REQUIRED)
 
 add_subdirectory(include)
 add_subdirectory(src)
-
-# This is having a linker issue, commenting out for now
-# add_subdirectory(tests)
+add_subdirectory(tests)
 
 ##
 # App setup

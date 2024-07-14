@@ -7,6 +7,6 @@ add_library(HyperDriveLib STATIC
 target_link_libraries(HyperDriveLib
     PUBLIC
         HyperDriveInterface
-        boost::boost
+        Boost::program_options
         nlohmann_json::nlohmann_json
 )
