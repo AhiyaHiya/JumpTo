@@ -29,7 +29,8 @@ std::int32_t main(std::int32_t argc, char** argv)
         ("add,a", boost::program_options::value<std::string>(),"Add a location")
         ("clean,c", "Clean up any locations that don't exist anymore")
         ("list,l", "List all of the locations")
-        ("remove,r", boost::program_options::value<std::string>(), "Remove given location");
+        ("remove,r", boost::program_options::value<std::string>(), "Remove given location")
+        ("location", boost::program_options::value<std::string>(), "Location");
 
     auto positionalArgs = boost::program_options::positional_options_description();
     positionalArgs.add("location", 1);
@@ -37,7 +38,8 @@ std::int32_t main(std::int32_t argc, char** argv)
     auto variables = boost::program_options::variables_map();
     try
     {
-        boost::program_options::store(boost::program_options::command_line_parser(argc, argv)
+        boost::program_options::store(
+            boost::program_options::command_line_parser(argc, argv)
             .options(options)
             .positional(positionalArgs)
             .run(), variables);
