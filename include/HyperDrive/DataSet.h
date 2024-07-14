@@ -5,9 +5,14 @@
 
 namespace DataSet
 {
+using Name = std::string;
+using Path = std::string;
+using Location = std::string;
+using Locations = std::map<Name, Path>;
+
 void CreateJsonFile(const std::string& filePath);
 auto GetAppDataPath() -> std::string;
-auto LoadDefaultFile() -> std::map<std::string, std::string>;
-auto LoadFromFile(const std::string& fileName) -> std::map<std::string, std::string>;
-void SaveToFile(const std::map<std::string, std::string>& dataSet, const std::string& fileName);
+auto LoadDefaultFile() -> Locations;
+auto LoadFromFile(const std::string& fileName) -> Locations;
+void SaveToFile(const Locations& dataSet, const std::string& fileName);
 }
