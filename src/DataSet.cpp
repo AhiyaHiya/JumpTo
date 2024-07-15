@@ -38,6 +38,13 @@ void CreateJsonFile(const std::string& filePath)
     }
 }
 
+auto GetAppDataFilename() -> std::string
+{
+    const auto appDataPath = std::filesystem::path(GetAppDataPath());
+    const auto filePath = std::filesystem::path(appDataPath / "hyperdrive_data.json"s);
+    return filePath.string();
+}
+
 auto GetAppDataPath() -> std::string
 {
     auto appDataPath = std::string();
@@ -64,11 +71,10 @@ auto GetAppDataPath() -> std::string
     return appDataPath;
 }
 
-auto LoadDefaultFile() -> std::map<std::string, std::string>
+auto LoadDefaultFile() -> Locations
 {
-    const auto appDataPath = std::filesystem::path(GetAppDataPath());
-    const auto filePath = std::filesystem::path(appDataPath / "hyperdrive_data.json"s);
-    const auto jsonFilePath = filePath.string();
+    const auto appDataPath = GetAppDataPath();
+    const auto jsonFilePath = GetAppDataFilename();
     if (std::filesystem::exists(jsonFilePath) == false)
     {
         if (!std::filesystem::exists(appDataPath))
@@ -81,7 +87,7 @@ auto LoadDefaultFile() -> std::map<std::string, std::string>
     return LoadFromFile(jsonFilePath);
 }
 
-auto LoadFromFile(const std::string& fileName) -> std::map<std::string, std::string>
+auto LoadFromFile(const std::string& fileName) -> Locations
 {
     auto fileStream = std::ifstream(fileName);
     auto json = nlohmann::json();
@@ -89,7 +95,7 @@ auto LoadFromFile(const std::string& fileName) -> std::map<std::string, std::str
     return json.get<std::map<std::string, std::string>>();
 }
 
-void SaveToFile(const std::map<std::string, std::string>& dataSet, const std::string& fileName)
+void SaveToFile(const Locations& dataSet, const std::string& fileName)
 {
     auto json = nlohmann::json(dataSet);
     auto fileStream = std::ofstream(fileName);

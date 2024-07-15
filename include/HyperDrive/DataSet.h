@@ -11,6 +11,7 @@ using Location = std::string;
 using Locations = std::map<Name, Path>;
 
 void CreateJsonFile(const std::string& filePath);
+auto GetAppDataFilename() -> std::string;
 auto GetAppDataPath() -> std::string;
 auto LoadDefaultFile() -> Locations;
 auto LoadFromFile(const std::string& fileName) -> Locations;
