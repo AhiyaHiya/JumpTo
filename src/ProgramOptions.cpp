@@ -13,22 +13,17 @@ void ParseCommandLineArguments(std::uint32_t argc, char** argv, Arguments& argum
         ("remove,r", boost::program_options::value<std::string>(), "Remove a location")
         ("version,v", "Prints the app version");
 
-    arguments.HiddenOptions.add_options()
-        ("location", boost::program_options::value<std::string>(),
-            "Go to specified location");
-
-    auto allOptions = boost::program_options::options_description();
-    allOptions.add(arguments.AllowedOptions).add(arguments.HiddenOptions);
-
-    auto positionalArgs = boost::program_options::positional_options_description();
-    positionalArgs.add("add", 2).add("remove", 1).add("location", 2);
 
     boost::program_options::store(
-        boost::program_options::command_line_parser(argc, argv)
-        .options(allOptions)
-        .positional(positionalArgs)
-        .run(), arguments.Variables);
+        boost::program_options::parse_command_line(argc, argv, arguments.AllowedOptions),
+        arguments.Variables);
 
-    boost::program_options::notify(arguments.Variables);
+    if (arguments.Variables.count("add")
+        + arguments.Variables.count("list")
+        + arguments.Variables.count("remove")
+        + arguments.Variables.count("version") > 1)
+    {
+        throw std::runtime_error("Error: Only one option can be selected at a time");
+    }
 }
 }

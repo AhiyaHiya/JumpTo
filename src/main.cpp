@@ -12,7 +12,7 @@ std::int32_t main(std::int32_t argc, char** argv)
     {
         ProgramOptions::ParseCommandLineArguments(argc, argv, arguments);
 
-        if (arguments.Variables.empty() || arguments.Variables.count("help"))
+        if (arguments.Variables.count("help") || argc == 1)
         {
             std::cout << arguments.AllowedOptions << "\n";
             return 0;
@@ -23,6 +23,7 @@ std::int32_t main(std::int32_t argc, char** argv)
 
         if (arguments.Variables.count("add"))
         {
+            std::cout << "Add called\n";
             const auto args = arguments.Variables["add"].as<std::vector<std::string>>();
             const auto name = args.at(0);
             const auto path = args.at(1);
@@ -34,23 +35,20 @@ std::int32_t main(std::int32_t argc, char** argv)
         }
         if (arguments.Variables.count("clean"))
         {
+            std::cout << "Clean called\n";
             HyperDrive::Clean(dataSet);
             DataSet::SaveToFile(dataSet, dataFullFilename);
             return 0;
         }
         if (arguments.Variables.count("list"))
         {
+            std::cout << "List called\n";
             HyperDrive::List(dataSet);
-            return 0;
-        }
-        if (arguments.Variables.count("location"))
-        {
-            const auto location = arguments.Variables["location"].as<std::string>();
-            HyperDrive::GoTo(location, dataSet);
             return 0;
         }
         if (arguments.Variables.count("remove"))
         {
+            std::cout << "Remove called\n";
             const auto name = arguments.Variables["remove"].as<std::string>();
             dataSet.erase(name);
             DataSet::SaveToFile(dataSet, dataFullFilename);
@@ -58,8 +56,16 @@ std::int32_t main(std::int32_t argc, char** argv)
         }
         if (arguments.Variables.count("version"))
         {
+            std::cout << "Version called\n";
             std::cout << std::format("HyperDrive version: {}.{}.{}\n",
                 VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
+            return 0;
+        }
+        if (argc == 2)
+        {
+            std::cout << "Goto location called\n";
+            const auto location = std::string(argv[1]);
+            HyperDrive::GoTo(location, dataSet);
             return 0;
         }
     }

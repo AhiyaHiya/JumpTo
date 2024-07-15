@@ -64,6 +64,11 @@ void Clean(DataSet::Locations& dataSet)
 
 void GoTo(const DataSet::Location& location, const DataSet::Locations& dataSet)
 {
+    if (!dataSet.contains(location))
+    {
+        std::cout << "Location not found: " << location << "\n";
+        return;
+    }
     auto destination = dataSet.at(location);
     auto path = std::filesystem::path(destination);
 
