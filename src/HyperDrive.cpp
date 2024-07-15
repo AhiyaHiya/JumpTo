@@ -6,26 +6,56 @@
 
 namespace HyperDrive
 {
-void AddTo(DataSet::Locations& dataSet, DataSet::Name name, DataSet::Path path)
+bool AddTo(DataSet::Locations& dataSet, DataSet::Name name, DataSet::Path path)
 {
+    if (name.empty())
+    {
+        throw std::invalid_argument("Name parameter is empty and is required");
+    }
+    if (path.empty())
+    {
+        throw std::invalid_argument("Path parameter is empty and is required");
+    }
     if (dataSet.contains(name))
     {
         std::cout << "Location already exists: " << name << "\n";
-        return;
+        return false;
     }
+
     std::filesystem::path resolvedPath;
+    auto printMessage = [](std::string_view name, std::string_view location)
+        {
+            std::cout << "Added location \"" << name << "\" for " << location << "\n";
+        };
     if (path == ".")
     {
-        resolvedPath = std::filesystem::current_path();
+        const auto currentPath = std::filesystem::current_path().string();
+        dataSet[name] = currentPath;
+        printMessage(name, currentPath);
+        return true;
     }
     if (path == "..")
     {
-        auto cwd = std::filesystem::current_path();
-        resolvedPath = cwd.parent_path();
+        const auto cwd = std::filesystem::current_path();
+        const auto parent = cwd.parent_path().string();
+        dataSet[name] = parent;
+        printMessage(name, parent);
+        return true;
     }
-    resolvedPath = std::filesystem::path(path).string();
 
-    dataSet[name] = resolvedPath.string();
+    auto unverifiedPath = std::filesystem::path(path);
+    if (!std::filesystem::exists(unverifiedPath))
+    {
+        throw std::runtime_error("Path not found");
+    }
+    if (!std::filesystem::is_directory(unverifiedPath))
+    {
+        throw std::runtime_error("Path does not point to folder");
+    }
+    const auto locationPath = std::filesystem::path(path).string();
+    dataSet[name] = locationPath;
+    printMessage(name, locationPath);
+    return true;
 }
 void Clean(DataSet::Locations& dataSet)
 {
@@ -34,7 +64,11 @@ void Clean(DataSet::Locations& dataSet)
 
 void GoTo(const DataSet::Location& location, const DataSet::Locations& dataSet)
 {
-    throw std::runtime_error("Not implemented");
+    auto destination = dataSet.at(location);
+    auto path = std::filesystem::path(destination);
+
+    std::filesystem::current_path(path);
+    std::cout << "Changed directory to: " << path << std::endl;
 }
 
 void List(const DataSet::Locations& dataSet)
