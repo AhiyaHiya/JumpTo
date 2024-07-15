@@ -12,9 +12,9 @@ find_package(Boost CONFIG REQUIRED COMPONENTS program_options)
 find_package(GTest CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 
-add_subdirectory(include)
-add_subdirectory(src)
-add_subdirectory(tests)
+add_subdirectory("include")
+add_subdirectory("src")
+add_subdirectory("tests")
 
 ##
 # App setup
