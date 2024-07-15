@@ -7,41 +7,56 @@
 
 std::int32_t main(std::int32_t argc, char** argv)
 {
-    boost::program_options::options_description options("HyperDrive options");
-    boost::program_options::variables_map variables;
+    auto arguments = ProgramOptions::Arguments();
     try
     {
-        ProgramOptions::ParseCommandLineArguments(argc, argv, options, variables);
+        ProgramOptions::ParseCommandLineArguments(argc, argv, arguments);
 
-        if (variables.empty() || variables.count("help"))
+        if (arguments.Variables.empty() || arguments.Variables.count("help"))
         {
-            std::cout << options << "\n";
+            std::cout << arguments.AllowedOptions << "\n";
             return 0;
         }
 
+        const auto dataFullFilename = DataSet::GetAppDataFilename();
         auto dataSet = DataSet::LoadDefaultFile();
 
-        if (variables.count("add"))
+        if (arguments.Variables.count("add"))
         {
-            HyperDrive::AddTo(dataSet, "name", "path");
+            const auto args = arguments.Variables["add"].as<std::vector<std::string>>();
+            const auto name = args.at(0);
+            const auto path = args.at(1);
+            if (HyperDrive::AddTo(dataSet, name, path))
+            {
+                DataSet::SaveToFile(dataSet, dataFullFilename);
+            }
             return 0;
         }
-        if (variables.count("clean"))
+        if (arguments.Variables.count("clean"))
         {
             HyperDrive::Clean(dataSet);
+            DataSet::SaveToFile(dataSet, dataFullFilename);
             return 0;
         }
-        if (variables.count("list"))
+        if (arguments.Variables.count("list"))
         {
             HyperDrive::List(dataSet);
             return 0;
         }
-        if (variables.count("location"))
+        if (arguments.Variables.count("location"))
         {
-            HyperDrive::GoTo("location", dataSet);
+            const auto location = arguments.Variables["location"].as<std::string>();
+            HyperDrive::GoTo(location, dataSet);
             return 0;
         }
-        if (variables.count("version"))
+        if (arguments.Variables.count("remove"))
+        {
+            const auto name = arguments.Variables["remove"].as<std::string>();
+            dataSet.erase(name);
+            DataSet::SaveToFile(dataSet, dataFullFilename);
+            return 0;
+        }
+        if (arguments.Variables.count("version"))
         {
             std::cout << std::format("HyperDrive version: {}.{}.{}\n",
                 VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
@@ -50,14 +65,24 @@ std::int32_t main(std::int32_t argc, char** argv)
     }
     catch (const boost::program_options::error& ex)
     {
-        std::cout << "Error: " << ex.what() << "\n";
-        std::cout << options << "\n";
+        std::cerr << "Error: " << ex.what() << "\n";
+        std::cerr << arguments.AllowedOptions << "\n";
         return -1;
+    }
+    catch (std::invalid_argument& ex)
+    {
+        std::cerr << "Error: " << ex.what() << "\n";
+        return -2;
+    }
+    catch (const std::exception& ex)
+    {
+        std::cerr << "Error: " << ex.what() << "\n";
+        return -3;
     }
     catch (...)
     {
-        std::cout << "Unknown exception \n";
-        return -2;
+        std::cout << "Unhandled exception \n";
+        return -4;
     }
 
     return 0;
