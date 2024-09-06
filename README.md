@@ -1,5 +1,18 @@
 Utility app for having fast folder access.
 
+# Setting up a Python virtual environment
+
+This ensures that you are using a specific version of Python.
+
+## Windows
+
+For Python 3.11.x
+
+"C:\Program Files\Python311\python.exe" -m venv NAME_OF_VIRTUAL_FOLDER
+NAME_OF_VIRTUAL_FOLDER\Scripts\activate.bat
+python --version
+conan --version
+
 # How to build
 
 ## macOS
