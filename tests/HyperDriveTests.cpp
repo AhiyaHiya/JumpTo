@@ -28,7 +28,7 @@ TEST(NoThrow, Clean)
 TEST(NoThrow, GoTo)
 {
     auto dataSet = DataSet::Locations();
-    ASSERT_NO_THROW(HyperDrive::GoTo("someUnknownLocation"s, dataSet)) <<
+    ASSERT_NO_THROW(HyperDrive::Get("someUnknownLocation"s, dataSet)) <<
         "With an empty dataset, this function should return gracefully";
 }
 
@@ -58,7 +58,7 @@ TEST(Boundary, Clean)
 TEST(Boundary, GoTo)
 {
     auto dataSet = DataSet::Locations();
-    ASSERT_NO_THROW(HyperDrive::GoTo("someUnknownLocation"s, dataSet)) <<
+    ASSERT_NO_THROW(HyperDrive::Get("someUnknownLocation"s, dataSet)) <<
         "With an empty dataset, this function should return gracefully";
 }
 

@@ -62,18 +62,14 @@ void Clean(DataSet::Locations& dataSet)
     throw std::runtime_error("Not implemented");
 }
 
-void GoTo(const DataSet::Location& location, const DataSet::Locations& dataSet)
+std::string Get(const DataSet::Location& location, const DataSet::Locations& dataSet)
 {
     if (!dataSet.contains(location))
     {
         std::cout << "Location not found: " << location << "\n";
         return;
     }
-    auto destination = dataSet.at(location);
-    auto path = std::filesystem::path(destination);
-
-    std::filesystem::current_path(path);
-    std::cout << "Changed directory to: " << path << std::endl;
+    return dataSet.at(location);
 }
 
 void List(const DataSet::Locations& dataSet)

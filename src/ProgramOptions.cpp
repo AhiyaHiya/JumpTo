@@ -9,6 +9,7 @@ void ParseCommandLineArguments(std::uint32_t argc, char** argv, Arguments& argum
         ("add,a", boost::program_options::value<std::vector<std::string>>()->multitoken(),
             "Add a new location")
         ("clean,c", "Clean up any locations that don't exist anymore")
+        ("get,g", boost::program_options::value<std::string>(), "Get a location by key")
         ("list,l", "List all the saved locations")
         ("remove,r", boost::program_options::value<std::string>(), "Remove a location")
         ("version,v", "Prints the app version");

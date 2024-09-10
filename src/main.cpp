@@ -63,9 +63,10 @@ std::int32_t main(std::int32_t argc, char** argv)
         }
         if (argc == 2)
         {
-            std::cout << "Goto location called\n";
+            std::cout << "Get location called\n";
             const auto location = std::string(argv[1]);
-            HyperDrive::GoTo(location, dataSet);
+            const auto path = HyperDrive::Get(location, dataSet);
+            std::cout << path << "\n";
             return 0;
         }
     }
