@@ -67,7 +67,7 @@ std::string Get(const DataSet::Location& location, const DataSet::Locations& dat
     if (!dataSet.contains(location))
     {
         std::cout << "Location not found: " << location << "\n";
-        return;
+        return "";
     }
     return dataSet.at(location);
 }
