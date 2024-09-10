@@ -1,4 +1,10 @@
-Utility app for having fast folder access.
+# Utility app for having fast folder access.
+
+Helper app that is used in conjunction with you shell environment.
+The resulting CLI is meant to be a fast mechanism for storing key-value
+pairs in a fast datastore, which returns the path of a folder you want
+saved, indexed by key, and uses that path to set the environment to 
+that location.
 
 # Setting up a Python virtual environment
 
