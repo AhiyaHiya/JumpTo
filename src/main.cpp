@@ -38,9 +38,9 @@ std::int32_t main(std::int32_t argc, char** argv)
             DataSet::SaveToFile(dataSet, dataFullFilename);
             return 0;
         }
-        if (arguments.Variables.count("get") || argc == 2)
+        if (arguments.Variables.count("get"))
         {
-            const auto location = argc == 2 ? std::string(argv[1]) : std::string(argv[2]);
+            const auto location = std::string(argv[2]);
             const auto path = HyperDrive::Get(location, dataSet);
             std::cout << path << "\n";
             return 0;
