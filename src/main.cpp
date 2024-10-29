@@ -1,6 +1,6 @@
 
-#include "HyperDrive/HyperDrive.h"
-#include "HyperDrive/ProgramOptions.h"
+#include "JumpTo/JumpTo.h"
+#include "JumpTo/ProgramOptions.h"
 
 #include <cstdint>
 #include <iostream>
@@ -26,7 +26,7 @@ std::int32_t main(std::int32_t argc, char** argv)
             const auto args = arguments.Variables["add"].as<std::vector<std::string>>();
             const auto name = args.at(0);
             const auto path = args.at(1);
-            if (HyperDrive::AddTo(dataSet, name, path))
+            if (JumpTo::AddTo(dataSet, name, path))
             {
                 DataSet::SaveToFile(dataSet, dataFullFilename);
             }
@@ -34,7 +34,7 @@ std::int32_t main(std::int32_t argc, char** argv)
         }
         if (arguments.Variables.count("clean"))
         {
-            HyperDrive::Clean(dataSet);
+            JumpTo::Clean(dataSet);
             DataSet::SaveToFile(dataSet, dataFullFilename);
             return 0;
         }
@@ -47,7 +47,7 @@ std::int32_t main(std::int32_t argc, char** argv)
         }
         if (arguments.Variables.count("list"))
         {
-            HyperDrive::List(dataSet);
+            JumpTo::List(dataSet);
             return 0;
         }
         if (arguments.Variables.count("remove"))
@@ -60,7 +60,7 @@ std::int32_t main(std::int32_t argc, char** argv)
         }
         if (arguments.Variables.count("version"))
         {
-            std::cout << std::format("HyperDrive version: {}.{}.{}\n",
+            std::cout << std::format("JumpTo version: {}.{}.{}\n",
                 VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
             return 0;
         }

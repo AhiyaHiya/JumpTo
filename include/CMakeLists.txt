@@ -1,7 +1,7 @@
 add_library(HyperDriveInterface INTERFACE
-    "HyperDrive/DataSet.h"
-    "HyperDrive/HyperDrive.h"
-    "HyperDrive/ProgramOptions.h"
+    "JumpTo/DataSet.h"
+    "JumpTo/JumpTo.h"
+    "JumpTo/ProgramOptions.h"
 )
 
 target_include_directories(HyperDriveInterface

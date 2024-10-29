@@ -1,10 +1,10 @@
 #pragma once
 
-#include "HyperDrive/DataSet.h"
+#include "JumpTo/DataSet.h"
 
 #include <string>
 
-namespace HyperDrive
+namespace JumpTo
 {
 // Returns true if operation succeeded
 bool AddTo(DataSet::Locations& dataSet, DataSet::Name name, DataSet::Path path);

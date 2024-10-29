@@ -1,6 +1,6 @@
 add_library(HyperDriveLib STATIC
     "DataSet.cpp"
-    "HyperDrive.cpp"
+    "JumpTo.cpp"
     "ProgramOptions.cpp"
 )
 

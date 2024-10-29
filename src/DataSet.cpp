@@ -1,4 +1,4 @@
-#include "HyperDrive/DataSet.h"
+#include "JumpTo/DataSet.h"
 
 #include <nlohmann/json.hpp>
 
@@ -48,7 +48,7 @@ auto GetAppDataFilename() -> std::string
 auto GetAppDataPath() -> std::string
 {
     auto appDataPath = std::string();
-    auto appFolderName = "HyperDrive"s;
+    auto appFolderName = "JumpTo"s;
 #ifdef _WIN32
     char path[MAX_PATH];
     if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, path)))

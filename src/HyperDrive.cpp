@@ -1,10 +1,10 @@
-#include "HyperDrive/HyperDrive.h"
+#include "JumpTo/JumpTo.h"
 
 #include <filesystem>
 #include <format>
 #include <iostream>
 
-namespace HyperDrive
+namespace JumpTo
 {
 bool AddTo(DataSet::Locations& dataSet, DataSet::Name name, DataSet::Path path)
 {
